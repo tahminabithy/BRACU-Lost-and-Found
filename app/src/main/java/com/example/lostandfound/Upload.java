@@ -1,12 +1,15 @@
 package com.example.lostandfound;
 
+import com.google.firebase.database.Exclude;
+
 public class Upload {
     private String mName;
     private String mImageUrl;
     private String mContactNumber;
     private String mEmail;
     private String mDate;
-
+    private String mKey;
+    private String mId;
     public Upload(){
 
     }
@@ -40,7 +43,7 @@ public class Upload {
     public String getNumber(){
         return  mContactNumber;
     }
-    public void setContactNumber(String number){
+    public void setNumber(String number){
         mContactNumber = number;
     }
 
@@ -58,4 +61,21 @@ public class Upload {
         mDate = date;
     }
 
+    @Exclude
+    public String getKey(){
+        return mKey;
+    }
+    @Exclude
+    public void setKey(String key){
+        mKey = key;
+    }
+
+    @Exclude
+    public String getId(){
+        return mId;
+    }
+    @Exclude
+    public void setId(String id){
+        mId = id;
+    }
 }

@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -23,13 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Found extends AppCompatActivity {
+public class Found extends AppCompatActivity implements ImageAdapter.OnItemClickListener {
 
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
-
+    private ProgressBar mProgressCircle;
+    private FirebaseStorage mStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +45,22 @@ public class Found extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mProgressCircle = findViewById(R.id.progress_circle);
+
+        mStorage = FirebaseStorage.getInstance();
 
         mUploads = new ArrayList<>();
+
+        mAdapter = new ImageAdapter(Found.this,mUploads);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(Found.this);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mUploads.clear();
+                String date = "",email="",url="",name="",number="",key = "";
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     /*Object op = postSnapshot.getValue();
                     Upload upload = postSnapshot.getValue(Upload.class);
@@ -53,13 +68,16 @@ public class Found extends AppCompatActivity {
 
                     mAdapter = new ImageAdapter(Found.this,mUploads);
                     mRecyclerView.setAdapter(mAdapter);*/
+                    key = postSnapshot.getKey();
 
                     Map<String, Object> map = (Map<String, Object>) postSnapshot.getValue();
-                    String date = "",email="",url="",name="",number="";
+
 
                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                         //System.out.println(entry.getKey() + "/" + entry.getValue());
+
                         Object obj = entry.getValue();
+                        //System.out.println(entry.getKey());
                         Gson gson = new Gson();
                         String json = gson.toJson(obj);
 
@@ -70,25 +88,58 @@ public class Found extends AppCompatActivity {
                                 email = myObjToConvert.getString("email");
                                 date = myObjToConvert.getString("date");
                                 url = myObjToConvert.getString("imageUrl");
+                                number = myObjToConvert.getString("number");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                         Upload upload = new Upload(name,url,number,email,date);
+                        upload.setKey(entry.getKey());
+                        upload.setId(key);
                         mUploads.add(upload);
 
-                        mAdapter = new ImageAdapter(Found.this,mUploads);
-                        mRecyclerView.setAdapter(mAdapter);
+                        //mProgressCircle.setVisibility(View.INVISIBLE);
                     }
                 }
+                mAdapter.notifyDataSetChanged();
+                mProgressCircle.setVisibility(View.INVISIBLE);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(Found.this,databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+                mProgressCircle.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Upload selectedItem = mUploads.get(position);
+        String selectedKey = selectedItem.getKey();
+
+        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
+        DatabaseReference dtRef = FirebaseDatabase.getInstance().getReference("uploads/"+selectedItem.getId()+"/"+selectedKey);
+        dtRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Upload up = dataSnapshot.getValue(Upload.class);
+                //String name, String imageUrl, String contcactNumber, String email, String date
+                Intent intent = new Intent(Found.this,ItemDescription.class);
+                intent.putExtra("name",up.getName());
+                intent.putExtra("url",up.getImageUrl());
+                intent.putExtra("number",up.getNumber());
+                intent.putExtra("email",up.getEmail());
+                intent.putExtra("date",up.getDate());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
     }
 }
