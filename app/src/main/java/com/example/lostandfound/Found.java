@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
     private List<Upload> mUploads;
     private ProgressBar mProgressCircle;
     private FirebaseStorage mStorage;
+    EditText searchText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressCircle = findViewById(R.id.progress_circle);
+        searchText = findViewById(R.id.search_text);
 
         mStorage = FirebaseStorage.getInstance();
 
@@ -112,6 +117,35 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
         });
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                filter(editable.toString());
+
+            }
+        });
+    }
+
+    private void filter(String text){
+        ArrayList<Upload>  filteredList = new ArrayList<>();
+        for (Upload item : mUploads){
+            if (item.getName().toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+        mAdapter.filterList(filteredList);
     }
 
     @Override
