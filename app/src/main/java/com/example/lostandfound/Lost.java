@@ -224,6 +224,7 @@ public class Lost extends AppCompatActivity {
                     mDatabaseRef.child(uploadId).setValue(upload);
                     Intent intent = new Intent(Lost.this,Found.class);
                     startActivity(intent);
+                    finish();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override

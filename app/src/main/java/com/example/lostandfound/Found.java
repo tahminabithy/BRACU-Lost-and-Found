@@ -176,4 +176,12 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+        finish();
+    }
 }

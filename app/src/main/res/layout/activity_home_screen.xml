@@ -9,29 +9,100 @@
     tools:context=".HomeScreen">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BRACU LOST AND FOUND\n                Welcome"
+        android:textSize="32dp"/>
+
+    <TextView
+        android:textSize="32dp"
         android:layout_margin="64dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Name"
         android:id="@+id/name"/>
-    <Button
-        android:onClick="goToLost"
-        android:layout_margin="16dp"
-        android:hint="Lost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:onClick="goToFound"
-        android:layout_margin="16dp"
-        android:hint="Found"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:onClick="SignOutButton"
+    <TextView
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Sign Out"/>
+        android:text="If you have found someones lost item you can press the Found Button and post there\nIf you have lost someting you can press the Lost button and then check if anyone else found that."/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:layout_width="83dp"
+            android:layout_height="86dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/finduser"
+            android:onClick="goToLost"/>
+        <ImageButton
+            android:background="@drawable/lostfound"
+            android:onClick="goToFound"
+            android:layout_margin="16dp"
+            android:hint="I have LOST something"
+            android:layout_width="83dp"
+            android:layout_height="86dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginRight="20dp"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Found"/>
+        <TextView
+            android:textSize="24dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lost"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:onClick="goToProfile"
+            android:layout_width="83dp"
+            android:layout_height="86dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/profile"/>
+
+        <ImageButton
+            android:onClick="SignOutButton"
+            android:layout_width="83dp"
+            android:layout_height="86dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/signout"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginRight="40dp"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"/>
+        <TextView
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log Out"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>

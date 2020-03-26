@@ -9,10 +9,11 @@
     tools:context=".Lost">
 
     <TextView
+        android:textSize="18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Name what you lost"/>
+        android:text="Name what you have Found"/>
     <EditText
         android:id="@+id/item_name"
         android:hint="Item"
@@ -35,23 +36,33 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="Capture A Photo Of The Item"/>
-    <Button
+    <ImageButton
+        android:background="@drawable/camera"
         android:onClick="takePicture"
-        android:hint="Item"
         android:layout_margin="16dp"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"/>
+        android:layout_width="70dp"
+        android:layout_height="70dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Take Photo"/>
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@mipmap/ic_launcher"
         android:id="@+id/img"/>
-    <Button
+    <ImageButton
+        android:background="@drawable/upload"
         android:onClick="uploadImage"
         android:text="Upload"
         android:layout_margin="16dp"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"/>
+        android:layout_width="83dp"
+        android:layout_height="86dp"/>
+    <TextView
+        android:textSize="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload"/>
 
     <ProgressBar
         android:layout_margin="16dp"

@@ -69,6 +69,11 @@ public class HomeScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToProfile(View view){
+        Intent intent = new Intent(HomeScreen.this,Profile.class);
+        startActivity(intent);
+    }
+
     public void SignOutButton(View view) {
         googleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -81,5 +86,11 @@ public class HomeScreen extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity(); // or finish();
     }
 }
