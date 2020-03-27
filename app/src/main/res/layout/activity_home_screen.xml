@@ -8,25 +8,19 @@
     android:orientation="vertical"
     tools:context=".HomeScreen">
 
-    <TextView
+    <ImageView
+        android:id="@+id/logo_m"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BRACU LOST AND FOUND\n                Welcome"
-        android:textSize="32dp"/>
+        android:layout_height="100dp"
+        android:src="@drawable/logo"/>
 
     <TextView
         android:textSize="32dp"
-        android:layout_margin="64dp"
+        android:layout_margin="44dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Name"
         android:id="@+id/name"/>
-    <TextView
-        android:layout_margin="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="If you have found someones lost item you can press the Found Button and post there\nIf you have lost someting you can press the Lost button and then check if anyone else found that."/>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

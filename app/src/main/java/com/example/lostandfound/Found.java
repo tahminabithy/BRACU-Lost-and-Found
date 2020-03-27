@@ -37,6 +37,7 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
     private ImageAdapter mAdapter;
     private DatabaseReference mDatabaseRef;
     private List<Upload> mUploads;
+    private List<Upload> mUploadsFull;
     private ProgressBar mProgressCircle;
     private FirebaseStorage mStorage;
     EditText searchText;
@@ -51,6 +52,7 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressCircle = findViewById(R.id.progress_circle);
         searchText = findViewById(R.id.search_text);
+        mUploadsFull = new ArrayList<>();
 
         mStorage = FirebaseStorage.getInstance();
 
@@ -106,6 +108,8 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
                         //mProgressCircle.setVisibility(View.INVISIBLE);
                     }
                 }
+                mUploadsFull.clear();
+                mUploadsFull.addAll(mUploads);
                 mAdapter.notifyDataSetChanged();
                 mProgressCircle.setVisibility(View.INVISIBLE);
 
@@ -140,12 +144,15 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
 
     private void filter(String text){
         ArrayList<Upload>  filteredList = new ArrayList<>();
-        for (Upload item : mUploads){
+        for (Upload item : mUploadsFull){
             if (item.getName().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(item);
             }
         }
+        mUploads.clear();
+        mUploads.addAll(filteredList);
         mAdapter.filterList(filteredList);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -153,7 +160,7 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
         Upload selectedItem = mUploads.get(position);
         String selectedKey = selectedItem.getKey();
 
-        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
+        /*StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
         DatabaseReference dtRef = FirebaseDatabase.getInstance().getReference("uploads/"+selectedItem.getId()+"/"+selectedKey);
         dtRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -173,7 +180,15 @@ public class Found extends AppCompatActivity implements ImageAdapter.OnItemClick
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+        Intent intent = new Intent(Found.this,ItemDescription.class);
+        intent.putExtra("name",selectedItem.getName());
+        intent.putExtra("url",selectedItem.getImageUrl());
+        intent.putExtra("number",selectedItem.getNumber());
+        intent.putExtra("email",selectedItem.getEmail());
+        intent.putExtra("date",selectedItem.getDate());
+        startActivity(intent);
 
     }
 
